@@ -53,19 +53,34 @@ disbursement is recorded once. Request credentials carry a native 72h
 
 ## Prerequisites
 
-- Node.js 20+
+- **Node.js 20+** and npm
 - In the default `mock` BTC mode, nothing else — both wallets are pre-funded
   automatically and a **＋ fund** button tops them up.
 - In `BTC_MODE=real`, both wallets need testnet BTC: open each BTC address's
   **faucet ↗** link in the UI (the merchant needs it to deposit for mints;
   Acme needs it to disburse on burns).
 
-## Run
+## Installation
+
+Clone the repo and install both halves (backend and frontend have separate
+dependencies):
 
 ```sh
-(cd backend && npm install)
-(cd frontend && npm install)
+git clone https://github.com/ajitkulk/xbtc-demo.git
+cd xbtc-demo
 
+# backend — Express + xrpl.js + bitcoinjs-lib
+cd backend && npm install && cd ..
+
+# frontend — Vite + React
+cd frontend && npm install && cd ..
+```
+
+## Run
+
+Start the two servers in separate terminals:
+
+```sh
 # terminal 1 — backend on http://localhost:4100
 cd backend && npm run dev
 
@@ -73,8 +88,9 @@ cd backend && npm run dev
 cd frontend && npm run dev
 ```
 
-Open <http://localhost:5273>. Click **Fund wallets**, top up the two BTC
-addresses from the faucet, then walk the steps A → B → C in order.
+Open <http://localhost:5273>. Click **Fund wallets**, then walk the steps
+A → B → C in order. (In `mock` mode the BTC wallets are funded for you; in
+`real` mode, top up each BTC address from its faucet link first.)
 
 ## Configuration (env vars, all optional)
 
@@ -106,4 +122,3 @@ xbtc-demo/
 - Devnet/testnet seeds and BTC WIFs live in `backend/data/state.json` (git-ignored). Don't commit it.
 - Bitcoin confirmations can be slow on testnet; the UI shows a live `n/N confirmations` count on the mint step and polls until the deposit is ready.
 - This is a demo: no auth, no rate limiting, no validation beyond what the ledgers enforce.
-```
